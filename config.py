@@ -18,7 +18,7 @@ app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USE_SSL'] = False
 app.config['MAIL_USERNAME'] = '' #example: test@gmail.com
 app.config['MAIL_PASSWORD'] = '' #example: password
-app.config['DOMAIN_NAME'] = 'http://py.bigpm.ru'
+app.config['DOMAIN_NAME'] = 'http://127.0.0.1:5000' #example: https://test.com
 mail = Mail(app)
 
 
