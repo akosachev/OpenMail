@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container col-xl-10 col-xxl-8 px-4 py-5">
+       <div class="col-lg-5 text-center text-lg-start">
+    <h1>Recovery password</h1>
+    <form method="post">
+        {{ form.hidden_tag() }}
+        <p>{{ form.email(class="form-control", id="email", placeholder="Email") }}</p>
+        {% for e in form.email.errors %} <div class="form-floating mb-3 alert alert-danger">
+            {{ e }}
+        </div>
+        {% endfor %}
+        {% for msg in get_flashed_messages() %} <div class="form-floating mb-3 alert alert-danger">
+            {{msg}}
+        </div>{% endfor %}
+        <p>{{ form.submit(class="btn btn-success") }}</p>
+    </form>
+    </div>
+</div>
+{% endblock %}

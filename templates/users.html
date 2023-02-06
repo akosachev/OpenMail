@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container col-xl-10 col-xxl-8 px-4 py-5">
+    <div class="row align-items-top g-lg-5 py-5">
+       <div class="col-lg-7 text-center text-lg-start">
+            <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Email</th>
+              <th scope="col">Username</th>
+              <th scope="col">Text</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for u in users %}
+            <tr>
+                <td>{{ u.email }}</td>
+                <td>{{ u.username }}</td>
+                <td><a href="{{ url_for('del_profile', user_id=u.id ) }}">Remove</a></td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+
+       <nav>
+          <ul class="pagination">
+              {% if users.has_prev %}
+                <li class="page-item">
+                  <a href="{{ url_for('profile', page=users.prev_num) }}" class="page-link">Previous</a>
+                </li>
+              {% else %}
+                <li class="page-item disabled">
+                  <a class="page-link">Previous</a>
+                </li>
+              {% endif %}
+              {% for number in users.iter_pages() %}
+                  {% if number is not none %}
+                    <li class="page-item"><a class="page-link{% if users.page ==number %} active{% endif %}" href="{{ url_for('profile', page=number) }}">{{ number }}</a></li>
+                  {% else %}
+                    <li class="page-item"><a class="page-link" href="#">...</a></li>
+                  {% endif %}
+              {% endfor %}
+            {% if users.has_next %}
+                <li class="page-item">
+                    <a href="{{ url_for('profile', page=users.next_num) }}" class="page-link">Next</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link">Next</a>
+                </li>
+            {% endif %}
+          </ul>
+        </nav>
+
+       </div>
+        <div class="col-md-10 mx-auto col-lg-5">
+            <div class="p-4 p-md-5 border rounded-3 bg-light">
+                 <img src="{{ url_for('static', filename='uploads/') }}{% if user.avatar %}{{ user.avatar }}{% else %}default.png{% endif %}" class="card-img-top">
+                {% for msg in get_flashed_messages() %}
+                    <div class="form-floating mb-3 alert alert-danger">
+                    {{msg}}
+                    </div>
+                {% endfor %}
+                <h5>Hello, {{ current_user.email }}!</h5>
+                <p><a href="{{ url_for('profile_edit') }}">Profile edit</a></p>
+                <p><a href="{{ url_for('new_mail') }}">New mail</a></p>
+                <p><a href="{{ url_for('logout') }}" class="btn btn-primary">Log Out</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

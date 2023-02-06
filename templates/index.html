@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container col-xl-10 col-xxl-8 px-4 py-5">
+    <div class="row align-items-center g-lg-5 py-5">
+      <div class="col-lg-7 text-center text-lg-start">
+        <h1 class="display-4 fw-bold lh-1 mb-3">The first service for sending non-modifiable messages.</h1>
+        <p class="col-lg-10 fs-4">The subject of the message, the time it was sent, and the text are hashed into a link.
+            By sending the link to the recipient, you guarantee that the message will not be changed by the service,
+            provider, third parties.</p>
+      </div>
+      <div class="col-md-10 mx-auto col-lg-5">
+
+          {% if not current_user.is_authenticated %}
+            <form class="p-4 p-md-5 border rounded-3 bg-light" action="{{ url_for('login', next=next) }}"  method="post">
+                {{ form.hidden_tag() }}
+              <div class="form-floating mb-3">
+                  {{ form.email(class='form-control', id="floatingInput", placeholder="name@example.com") }}
+                  {{ form.email.label(for="floatingInput") }}
+              </div>
+              <div class="form-floating mb-3">
+                  {{ form.password(class="form-control", id="floatingPassword", placeholder="Password") }}
+                  {{ form.password.label(for="floatingPassword") }}
+              </div>
+               {% for msg in get_flashed_messages() %} <div class="form-floating mb-3 alert alert-danger">
+                {{msg | safe}}
+              </div>{% endfor %}
+                {{ form.submit(class="w-100 btn btn-lg btn-primary") }}
+              <hr class="my-4">
+              <small class="text-muted">By clicking Sign up, you agree to the terms of use.</small>
+            </form>
+        {% else %}
+            <div class="p-4 p-md-5 border rounded-3 bg-light">
+              <h5>Hello, {{ current_user.email }}!</h5>
+                <p><a href="{{ url_for('profile') }}">My profile</a></p>
+                <p><a href="{{ url_for('new_mail') }}">New mail</a></p>
+                <p><a href="{{ url_for('logout') }}" class="btn btn-primary">Log Out</a></p>
+            </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

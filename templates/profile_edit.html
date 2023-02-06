@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container col-xl-10 col-xxl-8 px-4 py-5">
+       <div class="col-lg-5 text-center text-lg-start">
+        <img src="{{ url_for('static', filename='uploads/') }}{% if user.avatar %}{{ user.avatar }}{% else %}default.png{% endif %}" width="200px">
+            <form action="{{ url_for('upload') }}" method='POST' enctype="multipart/form-data">
+                {{ form_upload.hidden_tag() }}
+                <p>{{ form_upload.avatar }}{{ form_upload.submit }}</p>
+                {% for message in get_flashed_messages() if message not in ['Please select another mail.', 'Please select another username.'] %}
+                    <div class="mb-3 alert alert-danger">{{ message }}</div>
+                {% endfor %}
+            </form>
+            <form method='POST'>
+                {{ form_edit.hidden_tag() }}
+                <div class="col-12">
+                        {{ form_edit.email.label(class="form-label") }}
+                        {{ form_edit.email(class="form-control", value=user.email) }}
+                        {% for message in get_flashed_messages() if message == 'Please select another mail.' %}
+                        <div class="mb-3 alert alert-danger">
+                            {{ message }}
+                        </div>
+                       {% endfor %}
+
+                      {% for e in form_edit.email.errors %}
+                        <div class="mb-3 alert alert-danger">
+                            {{ e }}
+                      </div>
+                          {% endfor %}
+                </div>
+            <div class="col-12">
+                        {{ form_edit.username.label(class="form-label") }}
+                        {{ form_edit.username(class="form-control", value=user.username if user.username is not none) }}
+                        {% for message in get_flashed_messages() if message == 'Please select another username.' %}
+                        <div class="mb-3 alert alert-danger">
+                            {{ message }}
+                        </div>
+                       {% endfor %}
+
+                      {% for e in form_edit.email.errors %}
+                        <div class="mb-3 alert alert-danger">
+                            {{ e }}
+                      </div>
+                          {% endfor %}
+                </div>
+                {% for field in form_edit if field.name not in ['csrf_token', 'submit', 'email', 'username'] %}
+                    <div class="col-12">
+                        {{ field.label(class="form-label") }}
+                        {{ field(class="form-control") }}
+                      {% for e in field.errors %}
+                        <div class="mb-3 alert alert-danger">
+                            {{ e }}
+                      </div>
+                          {% endfor %}
+                    </div>
+                {% endfor %}
+            <hr class="my-4">
+            {{ form_edit.submit(class="w-100 btn btn-lg btn-primary") }}
+            </form>
+       </div>
+</div>
+{% endblock %}

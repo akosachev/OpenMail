@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+    <h1>Mail "{{ mail.title }}"</h1>
+        <p><small>Message hash: {{ hash }}<br>
+        Text hash: {{ text_hash }}</small></p>
+        <p><b>Hash status: {{ status }}<br>
+            Author: {{ mail.user.username if mail.user.username is not none else mail.user.email }}</b></p>
+        <p><b>{{ mail.created_time }}</b></p>
+        <p>{{ mail.message|safe }}</p>
+        {% if current_user.id == 1 or current_user == mail.user_id %}<a href="{{ url_for('del_mail', mail_hash=mail.mail_hash) }}" class="btn btn-danger">Delete</a>{% endif %}
+    </div>
+{% endblock %}

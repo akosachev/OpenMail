@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+    <h1>New mail</h1>
+    <form method="post">
+        {{ form.hidden_tag() }}
+        <p>{{ form.title(class="form-control", id="title", placeholder="Title") }}</p>
+        <p>{{ form.message(class="form-control", id="message", placeholder="Mail text", rows="10") }}</p>
+        {% for msg in get_flashed_messages() %} <div class="form-floating mb-3 alert alert-danger">
+                {{msg}}
+              </div>{% endfor %}
+        <p>{{ form.submit(class="btn btn-success") }}</p>
+    </form>
+    </div>
+{% endblock %}
